@@ -39,7 +39,7 @@ const printWorld = (worldToPrint) => {
   for (let i = 0; i < worldToPrint.length; i += 1) {
     let line = '';
     for (let j = 0; j < worldToPrint[i].length; j += 1) {
-      line += `${worldToPrint[i][j]}`;
+      line += `${worldToPrint[i][j]} `;
     }
     console.log(line);
   }

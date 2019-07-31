@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "keypress": "^0.2.1"
+  },
+  "name": "consolegame",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT"
+}

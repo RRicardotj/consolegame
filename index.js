@@ -1,5 +1,6 @@
 const keypress = require('keypress');
-const personSymbol = '*';
+const emoji = require('node-emoji');
+const personSymbol = emoji.get('beetle');
 
 const world2 = [
   ['x','F','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x',],
@@ -40,7 +41,8 @@ const printWorld = (worldToPrint) => {
   for (let i = 0; i < worldToPrint.length; i += 1) {
     let line = '';
     for (let j = 0; j < worldToPrint[i].length; j += 1) {
-      line += `${worldToPrint[i][j]} `;
+      const point = worldToPrint[i][j] === 'x' ? emoji.get('evergreen_tree') : worldToPrint[i][j];
+      line += `${point} `;
     }
     console.log(line);
   }
@@ -78,7 +80,7 @@ const loadWorld = (inputWorld) => {
   return { outputWorld, finishPoints, startingPoints };
 }
 
-const  { outputWorld, startingPoints, finishPoints } = loadWorld(world);
+const  { outputWorld, startingPoints, finishPoints } = loadWorld(world2);
 
 const getPoint = (x, y) => {
   const yAxis = y - 1;
@@ -132,7 +134,7 @@ const move = (currentPosition, nextPosition) =>  {
 
   if (nextPosition.x === finishPoints.x && nextPosition.y === finishPoints.y) {
     console.clear();
-    console.log(` 
+    console.log('\x1b[32m%s\x1b[0m',` 
     **    **   *******   **     **       **       ** ** ****     **       ** ** **
     //**  **   **/////** /**    /**      /**      /**/**/**/**   /**      /**/**/**
      //****   **     //**/**    /**      /**   *  /**/**/**//**  /**      /**/**/**

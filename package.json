@@ -1,7 +1,8 @@
 {
   "dependencies": {
     "keypress": "^0.2.1",
-    "node-emoji": "^1.10.0"
+    "node-emoji": "^1.10.0",
+    "readline-sync": "^1.4.10"
   },
   "scripts": {
     "start": "node index.js"

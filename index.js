@@ -1,4 +1,5 @@
 const keypress = require('keypress');
+const personSymbol = '*';
 
 const world2 = [
   ['x','F','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x',],
@@ -60,7 +61,7 @@ const loadWorld = (inputWorld) => {
 
       if (point === 'I') {
         // This is the starting point
-        outputWorld[i][j] = '*';
+        outputWorld[i][j] = personSymbol;
         startingPoints.x = x;
         startingPoints.y = y;
       }
@@ -77,7 +78,7 @@ const loadWorld = (inputWorld) => {
   return { outputWorld, finishPoints, startingPoints };
 }
 
-const  { outputWorld, startingPoints, finishPoints } = loadWorld(world2);
+const  { outputWorld, startingPoints, finishPoints } = loadWorld(world);
 
 const getPoint = (x, y) => {
   const yAxis = y - 1;
@@ -87,7 +88,7 @@ const getPoint = (x, y) => {
   return point;
 }
 
-const setPostion = (x, y, symbol = '*') => {
+const setPostion = (x, y, symbol = personSymbol) => {
   const yAxis = y - 1;
   const xAxis = x - 1;
 
@@ -131,7 +132,15 @@ const move = (currentPosition, nextPosition) =>  {
 
   if (nextPosition.x === finishPoints.x && nextPosition.y === finishPoints.y) {
     console.clear();
-    console.log('YOU WIN!!!');
+    console.log(` 
+    **    **   *******   **     **       **       ** ** ****     **       ** ** **
+    //**  **   **/////** /**    /**      /**      /**/**/**/**   /**      /**/**/**
+     //****   **     //**/**    /**      /**   *  /**/**/**//**  /**      /**/**/**
+      //**   /**      /**/**    /**      /**  *** /**/**/** //** /**      /**/**/**
+       /**   /**      /**/**    /**      /** **/**/**/**/**  //**/**      /**/**/**
+       /**   //**     ** /**    /**      /**** //****/**/**   //****      // // // 
+       /**    //*******  //*******       /**/   ///**/**/**    //***       ** ** **
+       //      ///////    ///////        //       // // //      ///       // // // `);
     process.exit(0);
   }
 

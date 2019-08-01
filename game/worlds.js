@@ -1,8 +1,8 @@
 module.exports = [
   {
     config: {
-      wall: '',
-      person: '',
+      wall: 'evergreen_tree',
+      person: 'beetle',
     },
     map: [
       ['x','x','x','x','x','x','F','x'],
@@ -17,8 +17,8 @@ module.exports = [
   },
   {
     config: {
-      wall: '',
-      person: '',
+      wall: 'evergreen_tree',
+      person: 'beetle',
     },
     map: [
       ['x','F','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x',],

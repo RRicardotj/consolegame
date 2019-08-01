@@ -1,14 +1,16 @@
 const emoji = require('node-emoji');
 
 function World(inputWorld) {
+  this.finish = false;
   if (!inputWorld) {
     throw new Error('You must pass a world to instance this object');
   }
 
-  const loadWorld = (inputWorld) => {
+  const loadWorld = (inputWorld, personSymbol) => {
     const outputWorld = Array.from(inputWorld);
     const finishPoints = { x: 0, y: 0 };
     const startingPoints = { x: 0, y: 0 };
+
   
     for (let i = 0; i < outputWorld.length; i += 1) {
       for (let j = 0; j < outputWorld[i].length; j += 1) {
@@ -20,7 +22,7 @@ function World(inputWorld) {
   
         if (point === 'I') {
           // This is the starting point
-          outputWorld[i][j] = this.personSymbol;
+          outputWorld[i][j] = personSymbol;
           startingPoints.x = x;
           startingPoints.y = y;
         }
@@ -37,16 +39,14 @@ function World(inputWorld) {
     return { outputWorld, finishPoints, startingPoints };
   }
 
-  const { outputWorld, finishPoints, startingPoints } = loadWorld(inputWorld.map);
-
-  const setPostion = (x, y, symbol = this.personSymbol) => {
+  this.setPostion = (x, y, symbol = this.personSymbol) => {
     const yAxis = y - 1;
     const xAxis = x - 1;
   
     this.map[yAxis][xAxis] = symbol;
   }
 
-  const getPoint = (x, y) => {
+  this.getPoint = (x, y) => {
     const yAxis = y - 1;
     const xAxis = x - 1;
     const point = this.map[yAxis][xAxis];
@@ -54,7 +54,7 @@ function World(inputWorld) {
     return point;
   }
 
-  const getNexPoint = (keyName) => {
+  this.getNexPoint = (keyName) => {
     const maxY = this.map.length;
     const maxX = this.map[0].length;
     const nextPosition = { ...this.currentPosition };
@@ -78,62 +78,57 @@ function World(inputWorld) {
     return nextPosition;
   }
 
-  printWorld = () => {
-    for (let i = 0; i < this.map.length; i += 1) {
+  printWorld = (map, wallSymbol) => {
+    for (let i = 0; i < map.length; i += 1) {
       let line = '';
-      for (let j = 0; j < this.map[i].length; j += 1) {
-        const point = this.map[i][j] === 'x' ? this.wallSymbol : this.map[i][j];
+      for (let j = 0; j < map[i].length; j += 1) {
+        const point = map[i][j] === 'x' ? wallSymbol : map[i][j];
         line += `${point} `;
       }
       console.log(line);
     }
   };
 
-  const reRender = () => {
+  const reRender = (map, wallSymbol) => {
     console.clear();
     
-    printWorld(this.map);
+    printWorld(map, wallSymbol);
   };
 
-  this.map = outputWorld;
-  this.currentPosition = startingPoints;
-  this.personSymbol = emoji.get(inputWorld.config.person);
-  this.wallSymbol = emoji.get(inputWorld.config.wall);
+  this.init = () => {
+    this.personSymbol = emoji.get(inputWorld.config.person);
+    const { outputWorld, finishPoints, startingPoints } = loadWorld(inputWorld.map, this.personSymbol);
+    this.finishPoints = finishPoints;
+    this.map = outputWorld;
+    this.currentPosition = startingPoints;
+    this.wallSymbol = emoji.get(inputWorld.config.wall);
 
-  this.init = () => { reRender(); }
+    reRender(this.map, this.wallSymbol);
+  }
 
   this.move = (buttom) =>  {
-    const nextPosition = getNexPoint(buttom);
+    if (!this.finish) {
+      const nextPosition = this.getNexPoint(buttom);
 
-    const nextPoint = getPoint(nextPosition.x, nextPosition.y);
-  
-    if (nextPosition.x === finishPoints.x && nextPosition.y === finishPoints.y) {
-      console.clear();
-      console.log('\x1b[32m%s\x1b[0m',` 
-      **    **   *******   **     **       **       ** ** ****     **       ** ** **
-      //**  **   **/////** /**    /**      /**      /**/**/**/**   /**      /**/**/**
-       //****   **     //**/**    /**      /**   *  /**/**/**//**  /**      /**/**/**
-        //**   /**      /**/**    /**      /**  *** /**/**/** //** /**      /**/**/**
-         /**   /**      /**/**    /**      /** **/**/**/**/**  //**/**      /**/**/**
-         /**   //**     ** /**    /**      /**** //****/**/**   //****      // // // 
-         /**    //*******  //*******       /**/   ///**/**/**    //***       ** ** **
-         //      ///////    ///////        //       // // //      ///       // // // `);
-      
-  
-      return { success: true, continue: false };
-    }
-  
-    if (nextPoint === ' ') {
-      setPostion(nextPosition.x, nextPosition.y);
-      setPostion(currentPosition.x, currentPosition.y, ' ');
-  
-      currentPosition.x = nextPosition.x;
-      currentPosition.y = nextPosition.y;
-    }
-  
-    reRender();
+      const nextPoint = this.getPoint(nextPosition.x, nextPosition.y);
+    
+      if (nextPosition.x === this.finishPoints.x && nextPosition.y === this.finishPoints.y) {
+        this.finish = true;
+        return { success: true, continue: false };
+      }
+    
+      if (nextPoint === ' ') {
+        this.setPostion(nextPosition.x, nextPosition.y);
+        this.setPostion(this.currentPosition.x, this.currentPosition.y, ' ');
+    
+        this.currentPosition.x = nextPosition.x;
+        this.currentPosition.y = nextPosition.y;
+      }
+    
+      reRender(this.map, this.wallSymbol);
 
-    return { success: false, continue: true };
+      return { success: false, continue: true };
+    }
   };
 }
 

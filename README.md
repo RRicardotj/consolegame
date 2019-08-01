@@ -8,7 +8,7 @@ _If you want to check it out, just clone the project and follow carefully the in
 
 ### Pre-requistes 📋
 
-_You mus have nodejs 8.x or grated installed on your machine_
+_You must have nodejs 8.x or grated installed on your machine_
 
 ### Installation 🔧
 

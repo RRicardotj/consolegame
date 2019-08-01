@@ -17,8 +17,8 @@ module.exports = [
   },
   {
     config: {
-      wall: 'evergreen_tree',
-      person: 'beetle',
+      wall: 'palm_tree',
+      person: 'octopus',
     },
     map: [
       ['x','F','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x',],

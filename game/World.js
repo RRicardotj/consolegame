@@ -104,7 +104,7 @@ function World(inputWorld) {
     this.wallSymbol = emoji.get(inputWorld.config.wall);
 
     reRender(this.map, this.wallSymbol);
-  }
+  };
 
   this.move = (buttom) =>  {
     if (!this.finish) {

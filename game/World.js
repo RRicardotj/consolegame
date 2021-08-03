@@ -96,12 +96,12 @@ function World(inputWorld) {
   };
 
   this.init = () => {
-    this.personSymbol = emoji.get(inputWorld.config.person);
+    this.personSymbol = inputWorld.config.person && emoji.get(inputWorld.config.person) || 'X';
     const { outputWorld, finishPoints, startingPoints } = loadWorld(inputWorld.map, this.personSymbol);
     this.finishPoints = finishPoints;
     this.map = outputWorld;
     this.currentPosition = startingPoints;
-    this.wallSymbol = emoji.get(inputWorld.config.wall);
+    this.wallSymbol = inputWorld.config.wall && emoji.get(inputWorld.config.wall) || 'T';
 
     reRender(this.map, this.wallSymbol);
   };
